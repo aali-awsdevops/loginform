@@ -1,0 +1,23 @@
+name: Loginform
+on: workflow_dispatch
+jobs:
+    dockerbuild_push:
+        runs-on: ubuntu-latest
+        steps:
+            - name: configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: us-east-1
+            - name: login
+              uses: aws-actions/amazon-ecr-login@v1
+            - name: Build Image
+              run: |
+                docker build -t ${{ github.repository }}:$BUILD_NUMBER .
+                docker tag ${{ github.repository }}:$BUILD_NUMBER $ECR_REGISTRY/${{ github.repository }}:$BUILD_NUMBER 
+                docker push $ECR_REGISTRY/${{ github.repository }}:$BUILD_NUMBER
+                env:
+                  ECR_REGISTRY: 472387458319.dkr.ecr.us-east-1.amazonaws.com
+                  ECR_REPOSITORY: dtag-cloudtechies
+                  BUILD_NUMBER: ${{ github.run_number }}
