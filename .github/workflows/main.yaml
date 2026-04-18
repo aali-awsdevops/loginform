@@ -18,7 +18,7 @@ jobs:
             - name: Build Image
               env:
                 ECR_REGISTRY: 472387458319.dkr.ecr.us-east-1.amazonaws.com
-                ECR_REPOSITORY: dtag-cloudtechies
+                ECR_REPOSITORY: loginform
                 BUILD_NUMBER: ${{ github.run_number }}
               run: |
                 REPO_NAME=$(echo ${{ github.repository }} | awk -F'/' '{print $2}')
