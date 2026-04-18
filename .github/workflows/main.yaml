@@ -13,12 +13,12 @@ jobs:
             - name: login
               uses: aws-actions/amazon-ecr-login@v1
             - name: Build Image
+              env:
+                ECR_REGISTRY: 472387458319.dkr.ecr.us-east-1.amazonaws.com
+                ECR_REPOSITORY: dtag-cloudtechies
+                BUILD_NUMBER: ${{ github.run_number }}
               run: |
                 REPO_NAME=$(echo ${{ github.repository }} | awk -F'/' '{print $2}')
                 docker build -t $REPO_NAME:$BUILD_NUMBER .
-                docker tag ${{ github.repository }}:$BUILD_NUMBER $ECR_REGISTRY/${{ github.repository }}:$BUILD_NUMBER 
-                docker push $ECR_REGISTRY/${{ github.repository }}:$BUILD_NUMBER
-                env:
-                  ECR_REGISTRY: 472387458319.dkr.ecr.us-east-1.amazonaws.com
-                  ECR_REPOSITORY: dtag-cloudtechies
-                  BUILD_NUMBER: ${{ github.run_number }}
+                docker tag $REPO_NAME:$BUILD_NUMBER $ECR_REGISTRY/$REPO_NAME:$BUILD_NUMBER 
+                docker push $ECR_REGISTRY/$REPO_NAME:$BUILD_NUMBER
