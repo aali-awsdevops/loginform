@@ -6,6 +6,6 @@ RUN mvn clean install -DskipTests
 
 FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
-COPY --from=build /app/target/login-backend-0.0.1-SNAPSHOT.jar loginform.jar
+COPY --from=Build /app/target/login-backend-0.0.1-SNAPSHOT.jar loginform.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "loginform.jar"]
